@@ -1,4 +1,4 @@
-from fastapi import APIRouter, UploadFile, File
+from fastapi import APIRouter, UploadFile, File,HTTPException
 from app.services.pdf.upload_service import UploadService
 
 router = APIRouter(
@@ -11,10 +11,16 @@ upload_service = UploadService()
 
 @router.post("/")
 async def upload_pdf(file: UploadFile = File(...)):
-    saved_path = await upload_service.save_file(file)
+    try:
+        saved_path = await upload_service.save_file(file)
 
-    return {
+        return {
         "message": "File uploaded successfully",
         "filename": file.filename,
         "saved_to": str(saved_path),
-    }
+        }
+    except ValueError as e:
+        raise HTTPException(
+            status_code=400,
+            detail=str(e),
+        )
