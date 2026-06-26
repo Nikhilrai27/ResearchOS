@@ -12,3 +12,7 @@ data/vectordb/
 
 .DS_Store
 CURRENT.md
+
+# Personal workflow files
+repo_map.md
+handbook_prompt.md
